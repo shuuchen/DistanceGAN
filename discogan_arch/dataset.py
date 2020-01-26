@@ -2,7 +2,7 @@ import os
 import cv2
 import numpy as np
 import pandas as pd
-from scipy.misc import imresize
+#from scipy.misc import imresize
 import scipy.io
 
 
@@ -17,10 +17,10 @@ face_real_path = os.path.join(dataset_path, 'real_face')
 car_path = os.path.join(dataset_path, 'data', 'cars')
 
 def shuffle_data(da, db):
-    a_idx = range(len(da))
+    a_idx = list(range(len(da)))
     np.random.shuffle( a_idx )
 
-    b_idx = range(len(db))
+    b_idx = list(range(len(db)))
     np.random.shuffle(b_idx)
 
     shuffled_da = np.array(da)[ np.array(a_idx) ]
@@ -98,13 +98,13 @@ def get_edge2photo_files(item='edges2handbags', test=False):
     else:
         item_path = os.path.join( item_path, 'train' )
 
-    image_paths = map(lambda x: os.path.join( item_path, x ), os.listdir( item_path ))
+    image_paths = list(map(lambda x: os.path.join( item_path, x ), os.listdir( item_path )))
 
     if test == True:
         return [image_paths, image_paths]
     else:
         n_images = len( image_paths )
-        return [image_paths[:n_images/2], image_paths[n_images/2:]]
+        return [image_paths[:n_images//2], image_paths[n_images//2:]]
 
 
 def get_facescrub_files(test=False, n_test=200):
@@ -202,8 +202,8 @@ def get_cars(test=False, ver=360, interval=1, half=None, angle_info=False, image
                 car_image = car_image.transpose(2,0,1)
                 car_image = car_image.astype(np.float32)/255.
                 car_images.append( car_image )
-		if angle_info:
-		    classes.append( idx )
+                if angle_info:
+                    classes.append(idx)
 
         elif ver == 90:
             for idx,i in enumerate(range(5,-1,-1)):

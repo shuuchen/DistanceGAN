@@ -128,8 +128,10 @@ class DiscoGAN(object):
         self.data_style_A, self.data_style_B, self.test_style_A, self.test_style_B = self.get_data()
 
         self.get_test_images()
-        self.test_A = Variable(torch.FloatTensor(self.test_A), volatile=True)
-        self.test_B = Variable(torch.FloatTensor(self.test_B), volatile=True)
+
+        with torch.no_grad():
+            self.test_A = Variable(torch.FloatTensor(self.test_A))
+            self.test_B = Variable(torch.FloatTensor(self.test_B))
 
         if not os.path.exists(self.result_path):
             os.makedirs(self.result_path)
@@ -253,11 +255,11 @@ class DiscoGAN(object):
             self.optim_gen.step()
 
         if self.iters % self.args.log_interval == 0:
-            print "---------------------"
-            print "GEN Loss:", self.as_np(self.gen_loss_A.mean()), self.as_np(self.gen_loss_B.mean())
-            print "Feature Matching Loss:", self.as_np(self.fm_loss_A.mean()), self.as_np(self.fm_loss_B.mean())
-            print "DIS Loss:", self.as_np(self.dis_loss_A.mean()), self.as_np(self.dis_loss_B.mean())
-            print "RECON Loss:", self.as_np(self.recon_loss_A.mean()), self.as_np(self.recon_loss_B.mean())
+            print("---------------------")
+            print("GEN Loss:", self.as_np(self.gen_loss_A.mean()), self.as_np(self.gen_loss_B.mean()))
+            print("Feature Matching Loss:", self.as_np(self.fm_loss_A.mean()), self.as_np(self.fm_loss_B.mean()))
+            print("DIS Loss:", self.as_np(self.dis_loss_A.mean()), self.as_np(self.dis_loss_B.mean()))
+            print("RECON Loss:", self.as_np(self.recon_loss_A.mean()), self.as_np(self.recon_loss_B.mean()))
 
         if self.iters % self.args.image_save_interval == 0:
             AB = self.generator_B(self.test_A)
