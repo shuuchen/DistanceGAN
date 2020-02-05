@@ -16,6 +16,10 @@ face_3d_path = os.path.join(dataset_path, 'PublicMM1', '05_renderings')
 face_real_path = os.path.join(dataset_path, 'real_face')
 car_path = os.path.join(dataset_path, 'data', 'cars')
 
+syn_path = '/home/ec2-user/data/data_ar/mnt/data/ar_demo/datasets/ana_dataset/data/'
+real_path = '/home/ec2-user/data/data_real/Objects_Photos/'
+
+
 def shuffle_data(da, db):
     a_idx = list(range(len(da)))
     np.random.shuffle( a_idx )
@@ -86,6 +90,16 @@ def get_celebA_files(style_A, style_B, constraint, constraint_type, test=False, 
     if test == True:
         return style_A_data[-n_test:], style_B_data[-n_test:]
 
+def get_syn2real_files(test=False):
+
+    syn_paths = list(map(lambda x: os.path.join(syn_path, x), \
+                    [x for x in os.listdir(syn_path)[:10000] if '.png' in x and \
+                      'texture' not in x and 'mask' not in x]))
+    
+    real_paths = list(map(lambda x: os.path.join(real_path, x), \
+                    [x for x in os.listdir(real_path) if 'ambient' in x]))
+
+    return [syn_paths, real_paths]
 
 def get_edge2photo_files(item='edges2handbags', test=False):
     if item == 'edges2handbags':

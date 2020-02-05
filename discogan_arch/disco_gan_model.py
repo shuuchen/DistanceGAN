@@ -34,6 +34,10 @@ class DiscoGAN(object):
             data_A, data_B = get_edge2photo_files(item='edges2handbags', test=False)
             test_A, test_B = get_edge2photo_files(item='edges2handbags', test=True)
 
+        elif self.args.task_name == 'syn2real':
+            data_A, data_B = get_syn2real_files()
+            test_A, test_B = get_syn2real_files( test=True)
+
         elif self.args.task_name == 'handbags2shoes':
             data_A_1, data_A_2 = get_edge2photo_files(item='edges2handbags', test=False)
             test_A_1, test_A_2 = get_edge2photo_files(item='edges2handbags', test=True)
